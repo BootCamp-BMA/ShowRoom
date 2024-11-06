@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/',(req,res,next)=>{
     try {
-        res.send('hello eveyone')
+        res.send('hello eveyone to my app ')
     } catch (error) {
         next(error)
     }
