@@ -1,8 +1,11 @@
 import React from 'react'
 import { NavLink, useNavigate } from "react-router-dom";
 import { CiMenuBurger } from "react-icons/ci";
+
 const NavBar = () => {
-  const navigate = useNavigate()
+  const token = localStorage.getItem('authToken');
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
   return (
     <div className="flex justify-between items-center text-sm py-4 mb-4 border-b border-b-gray-400">
       <NavLink to="/">
@@ -26,11 +29,17 @@ const NavBar = () => {
           <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
         </NavLink>
       </ul>
-      <NavLink to='/login'>
-        <button className='hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold '>Login</button>
-      </NavLink>
+      {
+        token ? 
+          <p>{userInfo ? userInfo.firstName : "User"}</p>  
+         :
+      
+        <NavLink to='/login'>
+          <button className='hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold '>Login</button>
+        </NavLink>
+      }
     </div>
   )
 }
 
-export default NavBar
+export default NavBar;
