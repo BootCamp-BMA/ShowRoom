@@ -54,17 +54,20 @@ const Login = () => {
 
       if (response.ok) {
         const data = JSON.parse(result);
-        console.log(data)
         console.log("Success:", data);
-         
+
         // Store user data in localStorage
         const userInfo = {
-          id: data.user.id 
+          firstName: data.user.firstName,
+          email: data.user.email,
+          password: data.user.password,
+          lastName:data.user.lastName,
+          phoneNum:data.user.phoneNum,
         };
-        
+
         localStorage.setItem("authToken", data.token);
-        localStorage.setItem("userInfo", JSON.stringify(userInfo)); // Store the whole object
-        
+        localStorage.setItem("userInfo", userInfo.firstName); // Store the whole object
+
         // Redirect to home page
         navigate("/");
       } else {
@@ -79,34 +82,36 @@ const Login = () => {
 
   return (
     <form
-      action=""
-      className="min-h-[80vh] flex items-center"
+      action=''
+      className='min-h-[80vh] flex items-center'
       onSubmit={onSubmitHandler}
     >
-      <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
-        <p className="text-2xl font-semibold">
+      <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg'>
+        <p className='text-2xl font-semibold'>
           {state === "Sign Up" ? "Create Account" : "Login"}
         </p>
-        <p>{`Please ${state === "Sign Up" ? "Sign Up" : "Login"} to book appointment`}</p>
+        <p>{`Please ${
+          state === "Sign Up" ? "Sign Up" : "Login"
+        } to book appointment`}</p>
 
         {/* Full Name Field for Sign Up */}
         {state === "Sign Up" && (
           <>
-            <div className="w-full">
+            <div className='w-full'>
               <p>First Name</p>
               <input
-                className="border border-[#DADADA] rounded w-full p-2 mt-1"
-                type="text"
+                className='border border-[#DADADA] rounded w-full p-2 mt-1'
+                type='text'
                 value={firstName}
                 required
                 onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
-            <div className="w-full">
+            <div className='w-full'>
               <p>Last Name</p>
               <input
-                className="border border-[#DADADA] rounded w-full p-2 mt-1"
-                type="text"
+                className='border border-[#DADADA] rounded w-full p-2 mt-1'
+                type='text'
                 value={lastName}
                 required
                 onChange={(e) => setLastName(e.target.value)}
@@ -116,11 +121,11 @@ const Login = () => {
         )}
 
         {/* Email Field */}
-        <div className="w-full">
+        <div className='w-full'>
           <p>Email</p>
           <input
-            className="border border-[#DADADA] rounded w-full p-2 mt-1"
-            type="email"
+            className='border border-[#DADADA] rounded w-full p-2 mt-1'
+            type='email'
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
@@ -128,11 +133,11 @@ const Login = () => {
         </div>
 
         {/* Password Field */}
-        <div className="w-full">
+        <div className='w-full'>
           <p>Password</p>
           <input
-            className="border border-[#DADADA] rounded w-full p-2 mt-1"
-            type="password"
+            className='border border-[#DADADA] rounded w-full p-2 mt-1'
+            type='password'
             value={password}
             required
             onChange={(e) => setPassword(e.target.value)}
@@ -141,11 +146,11 @@ const Login = () => {
 
         {/* Confirm Password Field */}
         {state === "Sign Up" && (
-          <div className="w-full">
+          <div className='w-full'>
             <p>Confirm Password</p>
             <input
-              className="border border-[#DADADA] rounded w-full p-2 mt-1"
-              type="password"
+              className='border border-[#DADADA] rounded w-full p-2 mt-1'
+              type='password'
               value={confirmPassword}
               required
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -154,11 +159,11 @@ const Login = () => {
         )}
 
         {state === "Sign Up" && (
-          <div className="w-full">
+          <div className='w-full'>
             <p>Phone Number</p>
             <input
-              className="border border-[#DADADA] rounded w-full p-2 mt-1"
-              type="text"
+              className='border border-[#DADADA] rounded w-full p-2 mt-1'
+              type='text'
               value={phoneNum} // Using phoneNum here
               required
               onChange={(e) => setPhoneNum(e.target.value)} // Using setPhoneNum here
@@ -168,8 +173,8 @@ const Login = () => {
 
         {/* Submit Button */}
         <button
-          className="bg-primary cursor-pointer text-white w-full py-2 my-2 rounded-md text-base"
-          type="submit"
+          className='bg-primary cursor-pointer text-white w-full py-2 my-2 rounded-md text-base'
+          type='submit'
         >
           {state === "Sign Up" ? "Create Account" : "Login"}
         </button>
@@ -181,7 +186,7 @@ const Login = () => {
               Already have an account?{" "}
               <a
                 onClick={() => setState("Login")}
-                className="text-primary cursor-pointer"
+                className='text-primary cursor-pointer'
               >
                 Login here
               </a>
@@ -191,7 +196,7 @@ const Login = () => {
               Create a new account?{" "}
               <a
                 onClick={() => setState("Sign Up")}
-                className="text-primary cursor-pointer"
+                className='text-primary cursor-pointer'
               >
                 Click here
               </a>

@@ -4,7 +4,7 @@ import { CiMenuBurger } from "react-icons/ci";
 
 const NavBar = () => {
   const token = localStorage.getItem('authToken');
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const userInfo = localStorage.getItem("userInfo");
 
   return (
     <div className="flex justify-between items-center text-sm py-4 mb-4 border-b border-b-gray-400">
@@ -31,7 +31,7 @@ const NavBar = () => {
       </ul>
       {
         token ? 
-          <p>{userInfo ? userInfo.firstName : "User"}</p>  
+          <p>{userInfo ? userInfo : "User"}</p>  
          :
       
         <NavLink to='/login'>
