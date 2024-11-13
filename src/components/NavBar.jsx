@@ -4,11 +4,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-  const [userInfo, setUserInfo] = useState(userDetails.user.firstName);
+  const [userInfo, setUserInfo] = useState(userDetails?.user?.firstName || ''); // Safe check using optional chaining
   const [showBox, setShowBox] = useState(false);
   const navigate = useNavigate();
   const LogOut = () =>{
-
+    localStorage.clear()
+    setUserInfo('')
+    navigate('/')
   }
   useEffect(() => {
     const handleStorageChange = () => {

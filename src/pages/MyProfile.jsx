@@ -11,6 +11,7 @@ const MyProfile = () => {
   const [photo, setPhoto] = useState("");
 
   const handleChanges = async (event) => {
+    
     event.preventDefault();
     const updatedUser = { firstName, lastName, phoneNum, photo };
     const url = "https://show-room-server-979c93442bc5.herokuapp.com/api/users/updateUser";
@@ -48,6 +49,7 @@ const MyProfile = () => {
         setPhoto(updatedUser.photo);
         window.dispatchEvent(new Event("storageUpdate"));
         window.dispatchEvent(new Event("storage"));
+        window.location.reload()
       } else {
         console.error("Error:", result);
         alert("Profile update failed. Please check your data.");
