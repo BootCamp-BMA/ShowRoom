@@ -3,8 +3,13 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  const [userInfo, setUserInfo] = useState(localStorage.getItem("userInfo"));
-  const navigate = useNavigate()
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  const [userInfo, setUserInfo] = useState(userDetails.user.firstName);
+  const [showBox, setShowBox] = useState(false);
+  const navigate = useNavigate();
+  const LogOut = () =>{
+
+  }
   useEffect(() => {
     const handleStorageChange = () => {
       setUserInfo(localStorage.getItem("userInfo"));
@@ -46,10 +51,22 @@ const NavBar = () => {
         </NavLink>
       </ul>
       {userInfo ? (
-        <div className='flex items-center gap-2 cursor-pointer' onClick={()=>{navigate('./myProfile')}}>
+        <div
+          className='flex items-center gap-2 cursor-pointer'
+          onClick={() => {
+            setShowBox(!showBox)
+          }}
+        >
           <div className='w-8 h-8 bg-primary text-white rounded-full flex justify-center items-center'>
             {getName(userInfo)} {/* Display the initials of the user's name */}
           </div>
+          {
+            showBox ? 
+            <div className="absolute top-16 right-5 mt-2 w-40 bg-white shadow-lg rounded-lg py-2rounded bg-white flex flex-col gap-3 border-2 border-black border-solid">
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={()=>navigate("/myProfile")}>MyProfile</button>
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"  onClick={()=>LogOut()}>Logout</button>
+            </div> :''
+          }
         </div>
       ) : (
         <NavLink to='/login'>

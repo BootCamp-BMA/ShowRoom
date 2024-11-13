@@ -55,9 +55,10 @@ const Login = () => {
 
         localStorage.setItem("authToken", result.token);
         localStorage.setItem("userInfo", userInfo);
-
+        localStorage.setItem('userDetails',JSON.stringify(result))
         // Emit a custom event to inform other components of the change
         window.dispatchEvent(new Event("storageUpdate"));
+        window.dispatchEvent(new Event("storage"));
 
         navigate("/");
       } else {
