@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import Header from "./Header";
 import Cars from "./Cars";
+import { FaRegHandshake, FaAward, FaCarSide } from "react-icons/fa";
 
 const Home = () => {
   const carsSectionRef = useRef(null);
@@ -33,6 +34,40 @@ const Home = () => {
           Explore Cars
         </button>
       </Header>
+
+      {/* Why Choose Us Section */}
+      <section className="py-12 px-6 bg-gray-100">
+        <h3 className="text-center text-5xl font-extrabold text-primary mb-8">
+          Why Choose Us?
+        </h3>
+        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Feature 1 */}
+          <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6">
+            <FaAward className="text-primary text-6xl mb-4" />
+            <h4 className="text-xl font-bold mb-2">Trusted by Thousands</h4>
+            <p className="text-gray-600">
+              Join a community of satisfied customers who trust us for their
+              car-buying needs.
+            </p>
+          </div>
+          {/* Feature 2 */}
+          <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6">
+            <FaRegHandshake className="text-primary text-6xl mb-4" />
+            <h4 className="text-xl font-bold mb-2">Seamless Transactions</h4>
+            <p className="text-gray-600">
+              Experience hassle-free processes from start to finish.
+            </p>
+          </div>
+          {/* Feature 3 */}
+          <div className="flex flex-col items-center text-center bg-white shadow-lg rounded-lg p-6">
+            <FaCarSide className="text-primary text-6xl mb-4" />
+            <h4 className="text-xl font-bold mb-2">Diverse Selection</h4>
+            <p className="text-gray-600">
+              Explore a wide variety of cars tailored to your needs and budget.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Featured Cars Section */}
       <section ref={carsSectionRef} className="py-12 px-4 sm:px-8 bg-white">
