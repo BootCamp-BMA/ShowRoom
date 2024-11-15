@@ -8,11 +8,10 @@ const Cars = () => {
 
   return (
     <div>
-      <h1 className="text-center text-6xl text-primary font-extrabold">Our Cars</h1>
       <div className="grid grid-cols-auto gap-10 mt-10">
         {cars.map((e) => (
           <div
-            key={e.id}  // Ensures each item has a unique key
+            key={e.id} // Ensures each item has a unique key
             className="cursor-pointer rounded-2xl border-primary border-solid border p-4"
             onClick={() => navigate(`/Cars/${e.id}`)}
           >
