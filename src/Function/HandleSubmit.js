@@ -22,7 +22,8 @@ export const handleFormSubmit = async ({
 
     if (response.ok) {
       const userInfo = result.user?.firstName;
-
+      // const userDetails = result
+      console.log(result);
       localStorage.setItem("authToken", result.token);
       localStorage.setItem("userInfo", userInfo);
       localStorage.setItem("userDetails", JSON.stringify(result));
@@ -30,8 +31,12 @@ export const handleFormSubmit = async ({
       // Emit custom events
       window.dispatchEvent(new Event("storageUpdate"));
       window.dispatchEvent(new Event("storage"));
-
-      navigate("/");
+      if (result.user.role === "admin") {
+        navigate("/admin");
+      }
+      if (result.user.role === "user") {
+        navigate("/");
+      }
     } else {
       console.error("Error:", result);
       alert("Request failed! Please check your credentials or input.");
