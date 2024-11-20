@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MyProfile = () => {
   const [loading, setLoading] = useState(false);
   const storedUser = JSON.parse(localStorage.getItem("userDetails"));
   const userDetails = storedUser.user;
-
+  const navigate = useNavigate()
   const [firstName, setFirstName] = useState(userDetails.firstName);
   const [lastName, setLastName] = useState(userDetails.lastName);
   const [phoneNum, setPhoneNum] = useState(userDetails.phoneNum);
   const [photo, setPhoto] = useState("");
+  useEffect(() => {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const token = userDetails?.token;
 
+    if (!token ) {
+      navigate("/login"); // Redirect if no token
+    } 
+    if (token && userDetails.user.role === "admin" ) {
+      navigate("/admin"); // Redirect if no token
+    } 
+    
+
+  }, [navigate]);
   const handleChanges = async (event) => {
     
     event.preventDefault();
