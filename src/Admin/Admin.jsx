@@ -3,13 +3,13 @@ import Dashboard from "./Dashboard";
 import AddProduct from "./AddProduct";
 import CartList from "./CartList";
 import Apointement from "./Apointement";
-import { LogOut } from "../Function/Logout";
+
 import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
   const [selectedCategory, setSelectedCategory] = useState("Dashoboard");
   const navigate = useNavigate();
-  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  // const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   // const [userInfo, setUserInfo] = useState(userDetails?.user?.firstName || "");
   const categories = [
     { name: "Dashoboard", component: <Dashboard /> },

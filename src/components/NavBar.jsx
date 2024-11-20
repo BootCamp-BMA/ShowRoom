@@ -65,7 +65,7 @@ const NavBar = () => {
             {getName(userInfo)} {/* Display the initials of the user's name */}
           </div>
           {showBox ? (
-            <div className=' absolute top-16 right-5 mt-2 w-40 bg-white shadow-lg rounded-lg py-2rounded bg-white flex flex-col gap-3 border-2 border-black border-solid'>
+            <div className=' absolute top-16 right-5 mt-2 w-40 bg-white shadow-lg rounded-lg py-2rounded bg-white flex flex-col gap-3 border-2 border-black border-solid z-50'>
               <button
                 className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                 onClick={() => navigate("/myProfile")}
