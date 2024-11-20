@@ -90,7 +90,7 @@ const NavBar = () => {
               Login
             </button>
           </NavLink>
-          <NavLink to='/admin' target='_blank'>
+          <NavLink to='/login' target='_blank'>
             <button className='hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold'>
               Admin Panel
             </button>
