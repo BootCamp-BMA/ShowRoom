@@ -7,7 +7,7 @@ const NavBar = () => {
   const [userInfo, setUserInfo] = useState(userDetails?.user?.firstName || ""); // Safe check using optional chaining
   const [showBox, setShowBox] = useState(false);
   const navigate = useNavigate();
-  
+
   const LogOut = () => {
     localStorage.clear();
     setUserInfo("");
@@ -32,48 +32,48 @@ const NavBar = () => {
     const nameArray = name.split(" ");
     return nameArray.map((word) => word[0].toUpperCase()).join("");
   };
-  
+
   return (
-    <div className='flex justify-between items-center text-sm py-4 mb-4 border-b border-b-gray-400'>
-      <NavLink to='/'>
-        <p className='cursor-pointer'>
-          ShowRoom <span className='text-slate-900'>.</span>
+    <div className="flex justify-between items-center text-sm py-4 mb-4 border-b border-b-gray-400">
+      <NavLink to="/">
+        <p className="cursor-pointer">
+          ShowRoom <span className="text-slate-900">.</span>
         </p>
       </NavLink>
-      <ul className='hidden md:flex items-start gap-16 font-semibold'>
-        <NavLink to='/'>
-          <li className='py-1'>Home</li>
+      <ul className="hidden md:flex items-start gap-16 font-semibold">
+        <NavLink to="/">
+          <li className="py-1">Home</li>
         </NavLink>
-        <NavLink to='/doctors'>
-          <li className='py-1'>All Cars</li>
+        <NavLink to="/doctors">
+          <li className="py-1">All Cars</li>
         </NavLink>
-        <NavLink to='/about'>
-          <li className='py-1'>About</li>
+        <NavLink to="/about">
+          <li className="py-1">About</li>
         </NavLink>
-        <NavLink to='/contact'>
-          <li className='py-1'>Contact</li>
+        <NavLink to="/contact">
+          <li className="py-1">Contact</li>
         </NavLink>
       </ul>
       {userInfo ? (
         <div
-          className='flex items-center gap-2 cursor-pointer'
+          className="flex items-center gap-2 cursor-pointer z-10"
           onClick={() => {
             setShowBox(!showBox);
           }}
         >
-          <div className='cursor-pointer w-8 h-8 bg-primary text-white rounded-full flex justify-center items-center'>
+          <div className="cursor-pointer w-8 h-8 bg-primary text-white rounded-full flex justify-center items-center">
             {getName(userInfo)} {/* Display the initials of the user's name */}
           </div>
           {showBox ? (
-            <div className=' absolute top-16 right-5 mt-2 w-40 bg-white shadow-lg rounded-lg py-2rounded bg-white flex flex-col gap-3 border-2 border-black border-solid'>
+            <div className=" absolute top-16 right-5 mt-2 w-40 bg-white shadow-lg rounded-lg py-2rounded bg-white flex flex-col gap-3 border-2 border-black border-solid">
               <button
-                className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 onClick={() => navigate("/myProfile")}
               >
                 MyProfile
               </button>
               <button
-                className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 onClick={() => LogOut()}
               >
                 Logout
@@ -85,13 +85,13 @@ const NavBar = () => {
         </div>
       ) : (
         <div className="flex gap-3">
-          <NavLink to='/login'>
-            <button className='hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold'>
+          <NavLink to="/login">
+            <button className="hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold">
               Login
             </button>
           </NavLink>
-          <NavLink to='/admin' target='_blank'>
-            <button className='hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold'>
+          <NavLink to="/admin" target="_blank">
+            <button className="hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold">
               Admin Panel
             </button>
           </NavLink>
