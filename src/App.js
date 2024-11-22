@@ -11,6 +11,7 @@ import Admin from "./Admin/Admin";
 import Footer from "./components/Footer";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import SignUp from "./pages/SignUp";
+import AllCars from "./pages/AllCars"; // Import the AllCars component
 
 const App = () => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const App = () => {
 
   return (
     <>
-      <div className="mx-3 sm:mx-[5%]">
+      <div className="w-screen h-screen">
         {hideNavBar ? (
           ""
         ) : (
@@ -31,10 +32,11 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp/>} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/about" element={<About />} />
           <Route path="/myProfile" element={<MyProfile />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/cars" element={<AllCars />} /> {/* Add this route */}
           <Route path="/Cars/:CarId" element={<CarDetails />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
