@@ -1,29 +1,42 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaEnvelope,
+  FaPhone,
+} from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-8">
+    <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-12">
       <div className="container mx-auto px-4 sm:px-6 md:px-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {/* Column 1: Links */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+          {/* Column 1: Quick Links */}
           <div>
-            <h4 className="text-xl font-semibold mb-4">Quick Links</h4>
+            <h4 className="text-2xl font-bold mb-6">Quick Links</h4>
             <ul>
               <li>
-                <NavLink to="/" className="block py-1 hover:text-gray-400">
+                <NavLink
+                  to="/"
+                  className="block py-2 text-gray-400 hover:text-white transition-colors"
+                >
                   Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/about" className="block py-1 hover:text-gray-400">
+                <NavLink
+                  to="/about"
+                  className="block py-2 text-gray-400 hover:text-white transition-colors"
+                >
                   About
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/contact"
-                  className="block py-1 hover:text-gray-400"
+                  className="block py-2 text-gray-400 hover:text-white transition-colors"
                 >
                   Contact
                 </NavLink>
@@ -33,44 +46,55 @@ const Footer = () => {
 
           {/* Column 2: Social Media */}
           <div>
-            <h4 className="text-xl font-semibold mb-4">Follow Us</h4>
-            <div className="flex space-x-4">
+            <h4 className="text-2xl font-bold mb-6">Follow Us</h4>
+            <div className="flex space-x-6">
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
               >
-                <i className="fab fa-facebook-f text-2xl hover:text-gray-400"></i>
+                <FaFacebookF className="text-3xl" />
               </a>
               <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
               >
-                <i className="fab fa-twitter text-2xl hover:text-gray-400"></i>
+                <FaTwitter className="text-3xl" />
               </a>
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
               >
-                <i className="fab fa-instagram text-2xl hover:text-gray-400"></i>
+                <FaInstagram className="text-3xl" />
               </a>
             </div>
           </div>
 
           {/* Column 3: Contact Info */}
           <div>
-            <h4 className="text-xl font-semibold mb-4">Contact Us</h4>
-            <p className="mb-2">ShowRoom Inc.</p>
-            <p className="mb-2">1234 Car Avenue, City, Country</p>
-            <p>Email: support@showroom.com</p>
+            <h4 className="text-2xl font-bold mb-6">Contact Us</h4>
+            <p className="flex items-center text-gray-400 mb-4">
+              <FaEnvelope className="mr-3 text-xl" />
+              support@showroom.com
+            </p>
+            <p className="flex items-center text-gray-400 mb-4">
+              <FaPhone className="mr-3 text-xl" />
+              +123 456 7890
+            </p>
+            <p className="text-gray-400">1234 Car Avenue, City, Country</p>
           </div>
         </div>
 
         {/* Bottom Section: Copyright */}
-        <div className="mt-8 border-t border-gray-700 pt-4 text-center">
-          <p>&copy; 2024 ShowRoom. All rights reserved.</p>
+        <div className="mt-12 border-t border-gray-700 pt-6 text-center">
+          <p className="text-gray-400">
+            &copy; 2024 ShowRoom. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
