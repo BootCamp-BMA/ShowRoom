@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Compressor} from 'compressorjs';
+import Compressor from 'compressorjs';
 
 const AddProduct = () => {
   const [model, setModel] = useState("");
@@ -33,23 +33,86 @@ const AddProduct = () => {
     }
   };
 
-  const handleModelChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setModelFile(file);
-    }
-  };
+  
 
   // Helper function to convert file to base64 string
+  // Define the function
+// const convertFileToBase64 = (file) => {
+//   return new Promise((resolve, reject) => {
+//     if (!(file instanceof File)) {
+//       return reject(new Error("Input must be a File object"));
+//     }
+
+//     const reader = new FileReader();
+
+//     reader.onloadend = () => resolve(reader.result);
+//     reader.onerror = (event) => {
+//       reject(new Error(`Failed to read file. Error: ${event.target.error?.message || "Unknown error"}`));
+//     };
+
+//     try {
+//       reader.readAsDataURL(file);
+//     } catch (error) {
+//       reject(new Error(`Error while starting file read: ${error.message}`));
+//     }
+//   });
+// };
+
+// Usage example
+// const handleFileUpload = async (event) => {
+//   const file = event.target.files[0];
+//   try {
+//     const base64String = await convertFileToBase64(file);
+//     setModelFile(base64String)
+//     console.log('Base64 String:', base64String);
+//   } catch (error) {
+//     console.error('Error converting file to Base64:', error.message);
+//   }
+// };
+
+  
+  // HTML Example
+  // <input type="file" onchange="handleFileUpload(event)" />
+  
+  const MAX_FILE_SIZE = 40 * 1024 * 1024; // 5 MB
+
   const convertFileToBase64 = (file) => {
     return new Promise((resolve, reject) => {
+      if (!(file instanceof File)) {
+        return reject(new Error("Input must be a File object"));
+      }
+  
+      if (file.size > MAX_FILE_SIZE) {
+        return reject(new Error(`File size exceeds the limit of ${MAX_FILE_SIZE / (1024 * 1024)} MB`));
+      }
+  
       const reader = new FileReader();
+  
       reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
+      reader.onerror = (event) => {
+        reject(new Error(`Failed to read file. Error: ${event.target.error?.message || "Unknown error"}`));
+      };
+  
+      try {
+        reader.readAsDataURL(file);
+      } catch (error) {
+        reject(new Error(`Error while starting file read: ${error.message}`));
+      }
     });
   };
-
+  
+  // Usage example
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    try {
+      const base64String = await convertFileToBase64(file);
+      setModelFile(base64String)
+      console.log('Base64 String:', base64String);
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -67,8 +130,8 @@ const AddProduct = () => {
       transmission,
       // engineSize,
       // description,
-      images: imageFile ? [await convertFileToBase64(imageFile)] : [], // Convert image to base64
-      model3D: modelFile ? await convertFileToBase64(modelFile) : "", // Convert model to base64
+      imageFile , // Convert image to base64
+      modelFile, // Convert model to base64
     };
 
     // Retrieve token from localStorage or elsewhere
@@ -109,8 +172,8 @@ const AddProduct = () => {
         // setEngineSize("");
         // setDescription("");
         setImageFile(null);
-        setModelFile(null);
-        setPreviewImage(null);
+        // setModelFile(null);
+        // setPreviewImage(null);
         console.log(responseData)
       } else {
         const errorData = await response.json();
@@ -155,6 +218,7 @@ const AddProduct = () => {
           </div>
 
           {/* 3D Model Upload */}
+         
           <div className="flex flex-col gap-2 mb-3">
             <label htmlFor="modelFile" className="font-medium">
               Upload 3D Model
@@ -164,7 +228,7 @@ const AddProduct = () => {
               id="modelFile"
               name="modelFile"
               accept=".glb,.gltf,.obj"
-              onChange={handleModelChange}
+              onChange={handleFileUpload}
             />
           </div>
 
@@ -275,7 +339,7 @@ const AddProduct = () => {
               onChange={(e) => setFuelType(e.target.value)}
             />
           </div> */}
-          {/* <div className="flex flex-col gap-2 mb-3">
+          <div className="flex flex-col gap-2 mb-3">
             <label htmlFor="transmission" className="font-medium">
               Transmission
             </label>
@@ -287,7 +351,7 @@ const AddProduct = () => {
               value={transmission}
               onChange={(e) => setTransmission(e.target.value)}
             />
-          </div> */}
+          </div>
           {/* <div className="flex flex-col gap-2 mb-3">
             <label htmlFor="engineSize" className="font-medium">
               Engine Size
