@@ -34,7 +34,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full z-20 flex justify-between items-center px-4 py-4 border-gray-300">
+    <div className="fixed top-0 left-0 w-full z-20 flex justify-between items-center px-4 py-4 ">
       <NavLink
         to="/"
         className="text-3xl font-bold hover:text-indigo-200 transition-colors duration-300"
