@@ -1,4 +1,3 @@
-// NavBar.js
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -13,12 +12,12 @@ const NavBar = () => {
     setUserInfo("");
     navigate("/");
   };
+
   useEffect(() => {
     const handleStorageChange = () => {
       setUserInfo(localStorage.getItem("userInfo"));
     };
 
-    // Listen for both the custom "storageUpdate" event and the "storage" event
     window.addEventListener("storageUpdate", handleStorageChange);
     window.addEventListener("storage", handleStorageChange);
 
@@ -27,6 +26,7 @@ const NavBar = () => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+
   const getName = (name) => {
     if (!name) return "";
     const nameArray = name.split(" ");
@@ -34,67 +34,79 @@ const NavBar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center text-sm py-4 mb-4 border-b border-b-gray-400">
-      <NavLink to="/">
-        <p className="cursor-pointer">
-          ShowRoom <span className="text-slate-900">.</span>
-        </p>
+    <div className="fixed top-0 left-0 w-full z-20 flex justify-between items-center px-4 py-4 border-gray-300">
+      <NavLink
+        to="/"
+        className="text-3xl font-bold hover:text-indigo-200 transition-colors duration-300"
+      >
+        ShowRoom <span className="text-yellow-300">.</span>
       </NavLink>
-      <ul className="hidden md:flex items-start gap-16 font-semibold">
-        <NavLink to="/">
-          <li className="py-1">Home</li>
+
+      {/* Navigation links with adjusted font size */}
+      <ul className="hidden md:flex items-center gap-12 font-medium">
+        <NavLink
+          to="/"
+          className="py-1 px-3 text-lg hover:bg-indigo-600 transition-all duration-300" // Adjusted font size for Home
+          activeClassName="bg-indigo-600 text-white font-bold"
+        >
+          Home
         </NavLink>
-        <NavLink to="/doctors">
-          <li className="py-1">All Cars</li>
+        <NavLink
+          to="/cars"
+          className="py-1 px-3 text-lg hover:bg-indigo-600 transition-all duration-300" // Adjusted font size for All Cars
+          activeClassName="bg-indigo-600 text-white font-bold"
+        >
+          All Cars
         </NavLink>
-        <NavLink to="/about">
-          <li className="py-1">About</li>
+        <NavLink
+          to="/about"
+          className="py-1 px-3 text-lg hover:bg-indigo-600 transition-all duration-300" // Adjusted font size for About
+          activeClassName="bg-indigo-600 text-white font-bold"
+        >
+          About
         </NavLink>
-        <NavLink to="/contact">
-          <li className="py-1">Contact</li>
+        <NavLink
+          to="/contact"
+          className="py-1 px-3 text-lg hover:bg-indigo-600 transition-all duration-300" // Adjusted font size for Contact
+          activeClassName="bg-indigo-600 text-white font-bold"
+        >
+          Contact
         </NavLink>
       </ul>
+
+      {/* User profile or login */}
       {userInfo ? (
         <div
-          className="flex items-center gap-2 cursor-pointer"
-          onClick={() => {
-            setShowBox(!showBox);
-          }}
+          className="relative flex items-center gap-3 cursor-pointer"
+          onClick={() => setShowBox(!showBox)}
         >
-          <div className="cursor-pointer w-8 h-8 bg-primary text-white rounded-full flex justify-center items-center">
-            {getName(userInfo)} {/* Display the initials of the user's name */}
+          <div className="w-10 h-10 bg-yellow-400 text-white rounded-full flex justify-center items-center text-lg font-semibold hover:scale-110 transition-transform duration-300">
+            {getName(userInfo)} {/* Display initials */}
           </div>
-          {showBox ? (
-            <div className=" absolute top-16 right-5 mt-2 w-40 bg-white shadow-lg rounded-lg py-2rounded bg-white flex flex-col gap-3 border-2 border-black border-solid z-50">
+          {showBox && (
+            <div className="absolute top-16 right-0 mt-2 w-48 bg-white shadow-xl rounded-lg py-2 border-2 border-gray-200 z-50 transition-all duration-300">
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                 onClick={() => navigate("/myProfile")}
               >
-                MyProfile
+                My Profile
               </button>
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
                 onClick={() => LogOut()}
               >
                 Logout
               </button>
             </div>
-          ) : (
-            ""
           )}
         </div>
       ) : (
         <div className="flex gap-3">
           <NavLink to="/login">
-            <button className="hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold">
+            <button className="hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold hover:scale-105 transition-transform duration-300">
               Login
             </button>
           </NavLink>
-          {/* <NavLink to='/login' target='_blank'>
-            <button className='hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold'>
-              Admin Panel
-            </button>
-          </NavLink> */}
         </div>
       )}
     </div>
