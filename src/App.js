@@ -19,7 +19,7 @@ const App = () => {
 
   return (
     <>
-      <div className="mx-3 sm:mx-[5%]">
+      <div className="w-full h-screen">
         {hideNavBar ? (
           ""
         ) : (
