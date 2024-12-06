@@ -119,7 +119,7 @@ const AddProduct = () => {
       // Upload Model
       if (modelFile) {
         const modelFormData = new FormData();
-        modelFormData.append("modelFile", modelFile);
+        modelFormData.append("model", modelFile);
   
         const modelResponse = await fetch(
           `https://show-room-server-979c93442bc5.herokuapp.com/api/file/uploadModelToCar/${carId}`,

@@ -1,22 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Appcontext } from "../contexts/AppContext";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import { use } from "react";
 
 const CarDetails = () => {
   const { cars } = useContext(Appcontext);
-  const { CarId } = useParams();
   const [loading, setLoading] = useState(false);
-  const carDetails = cars.find((e) => e.id === CarId);
-
+  const { CarId } = useParams();
   const [appointmentData, setAppointmentData] = useState({
-    appointmentDate: "", // Only date is required
+    appointmentDate: "",
     duration: "",
     notes: "",
   });
-
-  const [errorMessage, setErrorMessage] = useState("");  // To show error message for invalid date
+  const [errorMessage, setErrorMessage] = useState("");
+  const [modelUrl, setModelUrl] = useState(null); // State to hold the model URL
 
   const token = localStorage.getItem("authToken");
+
+  const carDetails = cars.find((car) => car._id === CarId);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,41 +30,39 @@ const CarDetails = () => {
     e.preventDefault();
 
     const { appointmentDate, duration, notes } = appointmentData;
-
-    // Convert the date to ISO 8601 with default time (12:00:00)
     const appointmentDateTime = new Date(appointmentDate + "T12:00:00Z");
 
-    // Validate if the selected date is in the future
     if (appointmentDateTime <= new Date()) {
-      setErrorMessage("Appointment date and time must be in the future.");
+      setErrorMessage("Appointment date must be in the future.");
       return;
-    } else {
-      setErrorMessage('')
     }
 
     const payload = {
-      price: carDetails.price,
+      price: carDetails.pricePerDay,
       carId: CarId,
       appointmentDateTime: appointmentDateTime.toISOString(),
       duration: parseInt(duration),
       notes,
-      userId: JSON.parse(localStorage.getItem("userDetails")).user._id,
+      userId: JSON.parse(localStorage.getItem("userDetails"))?.user._id,
     };
 
+    setErrorMessage("");
     setLoading(true);
     try {
-      const response = await fetch("https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
+      const response = await fetch(
+        "https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Error response from server:", errorData);
         throw new Error(errorData.message || "Failed to create appointment");
       }
 
@@ -74,6 +75,19 @@ const CarDetails = () => {
     }
   };
 
+  // Effect to fetch the model URL after car details are loaded
+  useEffect(() => {
+    if (carDetails && carDetails.model3D) {
+      setModelUrl(carDetails.model3D); // Set the model URL if available
+    } else {
+      setModelUrl("/fallback-model.glb"); // Use fallback model if not available
+    }
+  }, [carDetails]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <div className="p-6">
@@ -81,7 +95,13 @@ const CarDetails = () => {
           <>
             <h1 className="text-3xl font-bold">{carDetails.name}</h1>
             <p className="text-gray-600">Model: {carDetails.model}</p>
-            <img src={carDetails.image} alt={carDetails.name} className="w-64 h-64 object-cover mt-4" />
+            <div className="mt-4">
+              {modelUrl ? (
+                <ModelViewer modelUrl={modelUrl} />
+              ) : (
+                <p>No 3D model available</p>
+              )}
+            </div>
           </>
         ) : (
           <p>Car not found</p>
@@ -130,11 +150,26 @@ const CarDetails = () => {
             type="submit"
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
           >
-            {loading ? "..loading" : "Submit Appointment"}
+            {
+              loading ? "...loading" : "Submit Appointment"
+            }
           </button>
         </form>
       </div>
     </>
+  );
+};
+
+const ModelViewer = ({ modelUrl }) => {
+  const { scene } = useGLTF(modelUrl, true); // Load the 3D model
+
+  return (
+    <Canvas style={{ height: "500px", width: "100%" }}>
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[10, 10, 10]} />
+      <OrbitControls enableZoom={true} />
+      <primitive object={scene} scale={0.5} />
+    </Canvas>
   );
 };
 
