@@ -8,7 +8,7 @@ const AddProduct = () => {
   const [make, setMake] = useState("");
   const [year, setYear] = useState("");
   const [pricePerDay, setPricePerDay] = useState("");
-  const [transmission, setTransmission] = useState("");
+  const [transmission, setTransmission] = useState("Manual");
 
   const [imageFiles, setImageFiles] = useState([]); // Array to store image files
   const [modelFile, setModelFile] = useState(null);
@@ -170,6 +170,7 @@ const AddProduct = () => {
                 placeholder="Model"
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
+                required
               />
             </div>
             <div className="flex flex-col gap-2 mb-3">
@@ -183,6 +184,7 @@ const AddProduct = () => {
                 placeholder="Make"
                 value={make}
                 onChange={(e) => setMake(e.target.value)}
+                required
               />
             </div>
             <div className="flex flex-col gap-2 mb-3">
@@ -209,20 +211,24 @@ const AddProduct = () => {
                 placeholder="Price Per Day"
                 value={pricePerDay}
                 onChange={(e) => setPricePerDay(e.target.value)}
+                required
               />
             </div>
             <div className="flex flex-col gap-2 mb-3">
-              <label htmlFor="transmission" className="font-medium">
-                Transmission
-              </label>
-              <input
-                className="border rounded px-3 py-2"
-                type="text"
-                id="transmission"
-                placeholder="Transmission"
-                value={transmission}
-                onChange={(e) => setTransmission(e.target.value)}
-              />
+                <label htmlFor="transmission" className="font-medium">
+                  Transmission
+                </label>
+                <select
+                  className="border rounded px-3 py-2"
+                  id="transmission"
+                  value={transmission}
+                  onChange={(e) => setTransmission(e.target.value)}
+                  required
+                >
+                  <option value="Manual">Manual</option>
+                  <option value="Automatic">Automatic</option>
+                  <option value="Semi-Automatic">Semi-Automatic</option>
+                </select>
             </div>
             <button
               className="bg-primary cursor-pointer text-white w-full py-2 my-2 rounded-md text-base flex items-center justify-center"

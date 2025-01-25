@@ -108,68 +108,156 @@ const CarDetails = () => {
         )}
       </div>
 
-      <div className="p-6 mt-6 bg-gray-100 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Make an Appointment</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div>
-            <label className="block text-gray-700">Date:</label>
-            <input
-              type="date"
-              name="appointmentDate"
-              value={appointmentData.appointmentDate}
-              onChange={handleChange}
-              required
-              className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-          {errorMessage && (
-            <p className="text-red-500 text-sm">{errorMessage}</p>
-          )}
-          <div>
-            <label className="block text-gray-700">Duration (in days):</label>
-            <input
-              type="number"
-              name="duration"
-              value={appointmentData.duration}
-              onChange={handleChange}
-              required
-              min="1"
-              className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700">Notes:</label>
-            <textarea
-              name="notes"
-              value={appointmentData.notes}
-              onChange={handleChange}
-              className="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
-          >
-            {
-              loading ? "...loading" : "Submit Appointment"
-            }
-          </button>
-        </form>
-      </div>
+      <div className="p-6 mt-6 bg-gray-100 rounded-lg shadow-md max-w-md mx-auto">
+  <h2 className="text-2xl font-bold mb-6 text-center">Make an Appointment</h2>
+  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    {/* Date Field */}
+    <div>
+      <label htmlFor="appointmentDate" className="block text-gray-700 font-medium mb-1">
+        Date:
+      </label>
+      <input
+        type="date"
+        id="appointmentDate"
+        name="appointmentDate"
+        value={appointmentData.appointmentDate}
+        onChange={handleChange}
+        required
+        className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
+      />
+    </div>
+
+    {/* Error Message */}
+    {errorMessage && (
+      <p className="text-red-500 text-sm">{errorMessage}</p>
+    )}
+
+    {/* Duration Field */}
+    <div>
+      <label htmlFor="duration" className="block text-gray-700 font-medium mb-1">
+        Duration (in days):
+      </label>
+      <input
+        type="number"
+        id="duration"
+        name="duration"
+        value={appointmentData.duration}
+        onChange={handleChange}
+        required
+        min="1"
+        className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
+      />
+    </div>
+
+    {/* Notes Field */}
+    <div>
+      <label htmlFor="notes" className="block text-gray-700 font-medium mb-1">
+        Notes:
+      </label>
+      <textarea
+        id="notes"
+        name="notes"
+        value={appointmentData.notes}
+        onChange={handleChange}
+        rows="4"
+        className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
+        placeholder="Add any relevant notes (optional)"
+      />
+    </div>
+
+    {/* Submit Button */}
+    <button
+      type="submit"
+      disabled={loading}
+      className={`w-full py-2 px-4 rounded-md text-white ${
+        loading
+          ? "bg-blue-300 cursor-not-allowed"
+          : "bg-blue-500 hover:bg-blue-600 transition duration-200"
+      }`}
+    >
+      {loading ? "Submitting..." : "Submit Appointment"}
+    </button>
+  </form>
+   </div>
+
     </>
   );
 };
 
 const ModelViewer = ({ modelUrl }) => {
   const { scene } = useGLTF(modelUrl, true); // Load the 3D model
+  const [carColor, setCarColor] = useState("#ff0000"); // Default car color
 
+  // Function to handle color change
+  const handleColorChange = (color) => {
+    setCarColor(color);
+  };
   return (
-    <Canvas style={{ height: "500px", width: "100%" }}>
+    <div style={{ position: "relative", height: "500px", width: "100%" }}>
+    {/* Color Buttons */}
+    <div
+      style={{
+        position: "absolute",
+        top: "10px",
+        left: "10px",
+        zIndex: 10,
+        display: "flex",
+        gap: "10px",
+      }}
+    >
+      <button
+        onClick={() => handleColorChange("#ff0000")}
+        style={{
+          width: "40px",
+          height: "40px",
+          backgroundColor: "#ff0000",
+          border: "none",
+          borderRadius: "50%",
+          cursor: "pointer",
+        }}
+      />
+      <button
+        onClick={() => handleColorChange("#00ff00")}
+        style={{
+          width: "40px",
+          height: "40px",
+          backgroundColor: "#00ff00",
+          border: "none",
+          borderRadius: "50%",
+          cursor: "pointer",
+        }}
+      />
+      <button
+        onClick={() => handleColorChange("#0000ff")}
+        style={{
+          width: "40px",
+          height: "40px",
+          backgroundColor: "#0000ff",
+          border: "none",
+          borderRadius: "50%",
+          cursor: "pointer",
+        }}
+      />
+    </div>
+
+    {/* Canvas */}
+    <Canvas style={{ height: "100%", width: "100%" }} camera={{ position: [3, 3, 3], fov: 50 }}>
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 10]} />
       <OrbitControls enableZoom={true} />
-      <primitive object={scene} scale={0.5} />
+      {/* Car Object */}
+      <primitive
+        object={scene}
+        scale={0.5}
+        onUpdate={(car) => {
+          // Update material color dynamically
+          if (car.material) {
+            car.material.color.set(carColor);
+          }
+        }}
+      />
     </Canvas>
+  </div>
   );
 };
 

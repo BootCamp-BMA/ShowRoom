@@ -59,11 +59,12 @@ const Appointment = () => {
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error(`HTTP appointement error! Status: ${response.status}`);
         }
 
         const data = await response.json();
         setUsers(data); // Assuming the API returns an array of users
+        console.log(data)
       } catch (error) {
         console.error("Error fetching users:", error);
       }
