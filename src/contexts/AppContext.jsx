@@ -100,12 +100,6 @@ const AppContextProvider = (props) => {
       return null;
     }
   };
-  
- 
-  
-  
-  
-
   const value = { cars };
   return <Appcontext.Provider value={value}>{props.children}</Appcontext.Provider>;
 };

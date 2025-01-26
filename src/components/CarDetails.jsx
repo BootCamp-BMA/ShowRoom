@@ -1,9 +1,8 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Appcontext } from "../contexts/AppContext";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
-import { use } from "react";
 
 const CarDetails = () => {
   const { cars } = useContext(Appcontext);
@@ -15,7 +14,7 @@ const CarDetails = () => {
     notes: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
-  const [modelUrl, setModelUrl] = useState(null); // State to hold the model URL
+  const [modelUrl, setModelUrl] = useState(null);
 
   const token = localStorage.getItem("authToken");
 
@@ -60,7 +59,7 @@ const CarDetails = () => {
           body: JSON.stringify(payload),
         }
       );
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to create appointment");
@@ -75,12 +74,11 @@ const CarDetails = () => {
     }
   };
 
-  // Effect to fetch the model URL after car details are loaded
   useEffect(() => {
     if (carDetails && carDetails.model3D) {
-      setModelUrl(carDetails.model3D); // Set the model URL if available
+      setModelUrl(carDetails.model3D);
     } else {
-      setModelUrl("/fallback-model.glb"); // Use fallback model if not available
+      setModelUrl("/fallback-model.glb");
     }
   }, [carDetails]);
 
@@ -90,12 +88,12 @@ const CarDetails = () => {
 
   return (
     <>
-      <div className="p-6">
+      <div className="p-6 m-10">
         {carDetails ? (
           <>
-            <h1 className="text-3xl font-bold">{carDetails.name}</h1>
-            <p className="text-gray-600">Model: {carDetails.model}</p>
-            <div className="mt-4">
+            <h1 className="text-5xl font-bold text-center mb-4">{carDetails.make}</h1>
+            <p className="text-3xl text-gray-600 text-center">{carDetails.model}</p>
+            <div className="mt-8 flex justify-center">
               {modelUrl ? (
                 <ModelViewer modelUrl={modelUrl} />
               ) : (
@@ -109,155 +107,108 @@ const CarDetails = () => {
       </div>
 
       <div className="p-6 mt-6 bg-gray-100 rounded-lg shadow-md max-w-md mx-auto">
-  <h2 className="text-2xl font-bold mb-6 text-center">Make an Appointment</h2>
-  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-    {/* Date Field */}
-    <div>
-      <label htmlFor="appointmentDate" className="block text-gray-700 font-medium mb-1">
-        Date:
-      </label>
-      <input
-        type="date"
-        id="appointmentDate"
-        name="appointmentDate"
-        value={appointmentData.appointmentDate}
-        onChange={handleChange}
-        required
-        className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
-      />
-    </div>
-
-    {/* Error Message */}
-    {errorMessage && (
-      <p className="text-red-500 text-sm">{errorMessage}</p>
-    )}
-
-    {/* Duration Field */}
-    <div>
-      <label htmlFor="duration" className="block text-gray-700 font-medium mb-1">
-        Duration (in days):
-      </label>
-      <input
-        type="number"
-        id="duration"
-        name="duration"
-        value={appointmentData.duration}
-        onChange={handleChange}
-        required
-        min="1"
-        className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
-      />
-    </div>
-
-    {/* Notes Field */}
-    <div>
-      <label htmlFor="notes" className="block text-gray-700 font-medium mb-1">
-        Notes:
-      </label>
-      <textarea
-        id="notes"
-        name="notes"
-        value={appointmentData.notes}
-        onChange={handleChange}
-        rows="4"
-        className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
-        placeholder="Add any relevant notes (optional)"
-      />
-    </div>
-
-    {/* Submit Button */}
-    <button
-      type="submit"
-      disabled={loading}
-      className={`w-full py-2 px-4 rounded-md text-white ${
-        loading
-          ? "bg-blue-300 cursor-not-allowed"
-          : "bg-blue-500 hover:bg-blue-600 transition duration-200"
-      }`}
-    >
-      {loading ? "Submitting..." : "Submit Appointment"}
-    </button>
-  </form>
-   </div>
-
+        <h2 className="text-2xl font-bold mb-6 text-center">Make an Appointment</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <FormInput
+            label="Date"
+            id="appointmentDate"
+            name="appointmentDate"
+            type="date"
+            value={appointmentData.appointmentDate}
+            onChange={handleChange}
+            required={true}
+          />
+          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          <FormInput
+            label="Duration (in days)"
+            id="duration"
+            name="duration"
+            type="number"
+            value={appointmentData.duration}
+            onChange={handleChange}
+            required={true}
+            min="1"
+          />
+          <div>
+            <label
+              htmlFor="notes"
+              className="block text-gray-700 font-medium mb-1"
+            >
+              Notes:
+            </label>
+            <textarea
+              id="notes"
+              name="notes"
+              value={appointmentData.notes}
+              onChange={handleChange}
+              rows="4"
+              className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
+              placeholder="Add any relevant notes (optional)"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-2 px-4 rounded-md text-white ${
+              loading
+                ? "bg-blue-300 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600 transition duration-200"
+            }`}
+          >
+            {loading ? "Submitting..." : "Submit Appointment"}
+          </button>
+        </form>
+      </div>
     </>
   );
 };
 
-const ModelViewer = ({ modelUrl }) => {
-  const { scene } = useGLTF(modelUrl, true); // Load the 3D model
-  const [carColor, setCarColor] = useState("#ff0000"); // Default car color
-
-  // Function to handle color change
-  const handleColorChange = (color) => {
-    setCarColor(color);
-  };
+const FormInput = ({ label, id, name, type, value, onChange, required, min }) => {
   return (
-    <div style={{ position: "relative", height: "500px", width: "100%" }}>
-    {/* Color Buttons */}
-    <div
-      style={{
-        position: "absolute",
-        top: "10px",
-        left: "10px",
-        zIndex: 10,
-        display: "flex",
-        gap: "10px",
-      }}
-    >
-      <button
-        onClick={() => handleColorChange("#ff0000")}
-        style={{
-          width: "40px",
-          height: "40px",
-          backgroundColor: "#ff0000",
-          border: "none",
-          borderRadius: "50%",
-          cursor: "pointer",
-        }}
-      />
-      <button
-        onClick={() => handleColorChange("#00ff00")}
-        style={{
-          width: "40px",
-          height: "40px",
-          backgroundColor: "#00ff00",
-          border: "none",
-          borderRadius: "50%",
-          cursor: "pointer",
-        }}
-      />
-      <button
-        onClick={() => handleColorChange("#0000ff")}
-        style={{
-          width: "40px",
-          height: "40px",
-          backgroundColor: "#0000ff",
-          border: "none",
-          borderRadius: "50%",
-          cursor: "pointer",
-        }}
+    <div>
+      <label htmlFor={id} className="block text-gray-700 font-medium mb-1">
+        {label}:
+      </label>
+      <input
+        id={id}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        required={required}
+        min={min}
+        className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
       />
     </div>
+  );
+};
 
-    {/* Canvas */}
-    <Canvas style={{ height: "100%", width: "100%" }} camera={{ position: [3, 3, 3], fov: 50 }}>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 10]} />
-      <OrbitControls enableZoom={true} />
-      {/* Car Object */}
-      <primitive
-        object={scene}
-        scale={0.5}
-        onUpdate={(car) => {
-          // Update material color dynamically
-          if (car.material) {
-            car.material.color.set(carColor);
-          }
-        }}
-      />
-    </Canvas>
-  </div>
+function RotatingObject({ scene }) {
+  const meshRef = useRef();
+
+  useFrame(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y += 0.01;
+    }
+  });
+
+  return <primitive object={scene} ref={meshRef} />;
+}
+
+const ModelViewer = ({ modelUrl }) => {
+  const { scene } = useGLTF(modelUrl, true);
+
+  return (
+    <div
+      style={{ position: "relative", height: "400px", width: "80%" }}
+      className="border-black p-4 bg-blue-500 rounded-md text-center flex justify-center items-center"
+    >
+      <Canvas>
+        <ambientLight intensity={0.5} />
+        <OrbitControls />
+        <RotatingObject scene={scene} />
+      </Canvas>
+    </div>
   );
 };
 

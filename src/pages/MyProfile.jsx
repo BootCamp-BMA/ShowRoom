@@ -75,7 +75,7 @@ const MyProfile = () => {
   };
 
   return (
-    <form className='mt-4' onSubmit={handleChanges}>
+    <form className='my-20' onSubmit={handleChanges}>
       <div className='flex flex-col gap-5 p-5 bg-white shadow-md rounded-lg max-w-md mx-auto'>
         <h2 className='text-xl font-semibold text-center mb-5'>Edit Profile</h2>
 

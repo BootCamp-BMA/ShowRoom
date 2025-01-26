@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 
 const Appointment = () => {
   const [userAppointmentInfo, setUserAppointmentInfo] = useState([]);
@@ -42,10 +43,10 @@ const Appointment = () => {
         "https://show-room-server-979c93442bc5.herokuapp.com/api/users/getUsersWhere";
 
       const payload = {
-        condition: {}, // Adjust condition if filtering is required
-        select: "firstName lastName", // Fields to fetch
-        limit: 5, // Max number of results
-        skip: 0, // Pagination start
+        condition: {},
+        select: "firstName lastName",
+        limit: 5,
+        skip: 0,
       };
 
       try {
@@ -59,12 +60,11 @@ const Appointment = () => {
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP appointement error! Status: ${response.status}`);
+          throw new Error(`HTTP appointment error! Status: ${response.status}`);
         }
 
         const data = await response.json();
-        setUsers(data); // Assuming the API returns an array of users
-        console.log(data)
+        setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -111,10 +111,77 @@ const Appointment = () => {
     }
   }, [userAppointmentInfo]);
 
-  // Match user details with appointments (optional feature)
+  // Match user details with appointments
   const getUserName = (userId) => {
     const user = users.find((user) => user._id === userId);
     return user ? `${user.firstName} ${user.lastName}` : "Unknown User";
+  };
+
+  // Handle Accept Appointment
+  const handleAccept = async (appointmentId) => {
+    try {
+      console.log("Updating appointmentId:", appointmentId); // Debugging
+      const response = await fetch(
+        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update`, // Corrected endpoint
+        {
+          method: "PUT", // Change to PUT or PATCH if needed
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+          body: JSON.stringify({ appointmentId, status: "confirmed" }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error updating status: ${response.status} - ${errorText}`);
+      }
+
+      // Update local state
+      setUserAppointmentInfo((prev) =>
+        prev.map((appointment) =>
+          appointment._id === appointmentId
+            ? { ...appointment, status: "confirmed" }
+            : appointment
+        )
+      );
+    } catch (error) {
+      console.error("Error confirming appointment:", error);
+    }
+  };
+
+  // Handle Decline Appointment
+  const handleDecline = async (appointmentId) => {
+    try {
+      const response = await fetch(
+        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update`, // Corrected endpoint
+        {
+          method: "PUT", // Change to PUT or PATCH if needed
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+          body: JSON.stringify({ appointmentId, status: "canceled" }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Error updating status: ${response.status} - ${errorText}`);
+      }
+      console.log("apointement id ",appointmentId)
+      // Update the local state
+      setUserAppointmentInfo((prev) =>
+        prev.map((appointment) =>
+          appointment._id === appointmentId
+            ? { ...appointment, status: "canceled" }
+            : appointment
+        )
+      );
+    } catch (error) {
+      console.error("Error declining appointment:", error);
+    }
   };
 
   return (
@@ -123,27 +190,58 @@ const Appointment = () => {
 
       <div className="bg-white border rounded text-sm max-h-[80vh] overflow-y-scroll">
         {/* Header */}
-        <div className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col py-3 px-6 border-b">
+        <div className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_2fr] grid-flow-col py-3 px-6 border-b">
           <p>#</p>
           <p>User</p>
           <p>Price</p>
           <p>Date & Time</p>
           <p>Car Name</p>
-          <p>Action</p>
+          <p>Actions</p>
         </div>
 
         {/* Appointments */}
         {userAppointmentInfo.map((appointment, index) => (
           <div
             key={appointment._id}
-            className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_1fr_1fr] grid-flow-col py-3 px-6 border-b"
+            className="hidden sm:grid grid-cols-[0.5fr_3fr_1fr_3fr_3fr_2fr] grid-flow-col py-3 px-6 border-b"
           >
+
             <p>{index + 1}</p>
             <p>{getUserName(appointment.userId)}</p>
             <p>${appointment.price}</p>
             <p>{new Date(appointment.appointmentDateTime).toLocaleString()}</p>
             <p>{carDetails[appointment.carId] || "Loading..."}</p>
-            <button className="text-blue-500 hover:underline">View</button>
+            <div className="flex gap-2">
+              {appointment.status === "pending" && (
+                <>
+                  <button
+                    onClick={() => handleAccept(appointment._id)}
+                    className="bg-green-500 text-white py-1 px-3 rounded flex items-center gap-1 hover:bg-green-600"
+                  >
+                    <AiOutlineCheckCircle />
+                    Accept
+                  </button>
+                  <button
+                    onClick={() => handleDecline(appointment._id)}
+                    className="bg-red-500 text-white py-1 px-3 rounded flex items-center gap-1 hover:bg-red-600"
+                  >
+                    <AiOutlineCloseCircle />
+                    Decline
+                  </button>
+                </>
+              )}
+              {appointment.status !== "pending" && (
+                <span
+                  className={`py-1 px-3 rounded ${
+                    appointment.status === "confirmed"
+                      ? "bg-green-100 text-green-600"
+                      : "bg-red-100 text-red-600"
+                  }`}
+                >
+                  {appointment.status}
+                </span>
+              )}
+            </div>
           </div>
         ))}
 

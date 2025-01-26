@@ -11,6 +11,7 @@ import Admin from "./Admin/Admin";
 import Footer from "./components/Footer";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import SignUp from "./pages/SignUp";
+import MyApointement from "./pages/MyApointement";
 
 const App = () => {
   const location = useLocation();
@@ -34,8 +35,9 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/about" element={<About />} />
           <Route path="/myProfile" element={<MyProfile />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/myApointement" element={<MyApointement/>} />
           <Route path="/Cars/:CarId" element={<CarDetails />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
         {/* Add Footer here */}
         {hideFooter ? "" : <Footer />}
