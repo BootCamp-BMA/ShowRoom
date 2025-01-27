@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        porsche: ['"Porsche Next"', 'sans-serif'],
+      },
       colors: {
         'primary': '#5f6FFF',  // Adds a custom color 'primary' to the theme
       },
@@ -16,3 +19,4 @@ module.exports = {
   },
   plugins: [],
 }
+
