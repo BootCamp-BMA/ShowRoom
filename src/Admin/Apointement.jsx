@@ -122,7 +122,7 @@ const Appointment = () => {
     try {
       console.log("Updating appointmentId:", appointmentId); // Debugging
       const response = await fetch(
-        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update`, // Corrected endpoint
+        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update/${appointmentId}`, // Corrected endpoint
         {
           method: "PUT", // Change to PUT or PATCH if needed
           headers: {
@@ -155,7 +155,7 @@ const Appointment = () => {
   const handleDecline = async (appointmentId) => {
     try {
       const response = await fetch(
-        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update`, // Corrected endpoint
+        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update/${appointmentId}`, // Corrected endpoint
         {
           method: "PUT", // Change to PUT or PATCH if needed
           headers: {
