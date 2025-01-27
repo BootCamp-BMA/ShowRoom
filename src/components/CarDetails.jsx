@@ -2,7 +2,13 @@ import React, { useContext, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Appcontext } from "../contexts/AppContext";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import {
+  OrbitControls,
+  useGLTF,
+  Environment,
+  Html,
+  useProgress,
+} from "@react-three/drei";
 
 const CarDetails = () => {
   const { cars } = useContext(Appcontext);
@@ -91,8 +97,12 @@ const CarDetails = () => {
       <div className="p-6 m-10">
         {carDetails ? (
           <>
-            <h1 className="text-5xl font-bold text-center mb-4">{carDetails.make}</h1>
-            <p className="text-3xl text-gray-600 text-center">{carDetails.model}</p>
+            <h1 className="text-5xl font-bold text-center mb-4">
+              {carDetails.make}
+            </h1>
+            <p className="text-3xl text-gray-600 text-center">
+              {carDetails.model}
+            </p>
             <div className="mt-8 flex justify-center">
               {modelUrl ? (
                 <ModelViewer modelUrl={modelUrl} />
@@ -107,7 +117,9 @@ const CarDetails = () => {
       </div>
 
       <div className="p-6 mt-6 bg-gray-100 rounded-lg shadow-md max-w-md mx-auto">
-        <h2 className="text-2xl font-bold mb-6 text-center">Make an Appointment</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Make an Appointment
+        </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <FormInput
             label="Date"
@@ -118,7 +130,9 @@ const CarDetails = () => {
             onChange={handleChange}
             required={true}
           />
-          {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+          {errorMessage && (
+            <p className="text-red-500 text-sm">{errorMessage}</p>
+          )}
           <FormInput
             label="Duration (in days)"
             id="duration"
@@ -163,7 +177,16 @@ const CarDetails = () => {
   );
 };
 
-const FormInput = ({ label, id, name, type, value, onChange, required, min }) => {
+const FormInput = ({
+  label,
+  id,
+  name,
+  type,
+  value,
+  onChange,
+  required,
+  min,
+}) => {
   return (
     <div>
       <label htmlFor={id} className="block text-gray-700 font-medium mb-1">
@@ -195,19 +218,57 @@ function RotatingObject({ scene }) {
   return <primitive object={scene} ref={meshRef} />;
 }
 
+function Loader() {
+  const { progress } = useProgress();
+  return (
+    <Html center>
+      <div className="flex flex-col items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 mb-2"></div>
+        <p className="text-gray-700 font-semibold">
+          Loading... {Math.round(progress)}%
+        </p>
+      </div>
+    </Html>
+  );
+}
+
 const ModelViewer = ({ modelUrl }) => {
-  const { scene } = useGLTF(modelUrl, true);
+  const { scene, error } = useGLTF(modelUrl, true);
+
+  if (error) {
+    return (
+      <div className="p-4 bg-red-100 rounded-md text-center">
+        <p className="text-red-500 font-bold">
+          Failed to load the 3D model. Please try again later.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
-      style={{ position: "relative", height: "400px", width: "80%" }}
-      className="border-black p-4 bg-blue-500 rounded-md text-center flex justify-center items-center"
+      style={{ position: "relative", height: "500px", width: "100%" }}
+      className="border border-gray-300 shadow-lg rounded-md bg-gradient-to-r from-blue-100 to-white"
     >
       <Canvas>
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.3} />
+        <directionalLight position={[10, 10, 10]} intensity={1} />
         <OrbitControls />
-        <RotatingObject scene={scene} />
+        <Environment preset="city" background />
+        <React.Suspense fallback={<Loader />}>
+          <RotatingObject scene={scene} />
+        </React.Suspense>
       </Canvas>
+      <div className="absolute top-4 left-4 bg-white bg-opacity-90 rounded-md shadow-md px-4 py-2 text-sm text-gray-700">
+        <p>🖱️ Drag to rotate</p>
+        <p>🔍 Scroll to zoom</p>
+      </div>{" "}
+      Fixed Suspense fallback loader and added user instructions for rotating
+      and zooming the 3D object in CarDetails component Fixed Suspense fallback
+      loader and added user instructions for rotating and zooming the 3D object
+      in CarDetails component Fixed Suspense fallback loader and added user
+      instructions for rotating and zooming the 3D object in CarDetails
+      component
     </div>
   );
 };
