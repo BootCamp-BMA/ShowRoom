@@ -141,15 +141,7 @@ const MyAppointment = () => {
                   {appointment.status || "Unknown"} {/* Fallback text for status */}
                 </span>
               </p>
-              <div className="mt-4 flex gap-4">
-                <button className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition-colors duration-200">
-                  Cancel Appointment
-                </button>
-                {/* Uncomment if needed */}
-                {/* <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-200">
-                  Pay Online
-                </button> */}
-              </div>
+              
             </div>
           );
         })

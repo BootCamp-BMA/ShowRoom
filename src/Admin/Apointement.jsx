@@ -64,6 +64,7 @@ const Appointment = () => {
         }
 
         const data = await response.json();
+        console.log(data)
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -113,7 +114,7 @@ const Appointment = () => {
 
   // Match user details with appointments
   const getUserName = (userId) => {
-    const user = users.find((user) => user._id === userId);
+    const user = users.find((user) => user.userId === userId);
     return user ? `${user.firstName} ${user.lastName}` : "Unknown User";
   };
 
@@ -129,7 +130,7 @@ const Appointment = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
-          body: JSON.stringify({ appointmentId, status: "confirmed" }),
+          body: JSON.stringify({ status: "confirmed" }),
         }
       );
 
@@ -162,7 +163,7 @@ const Appointment = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
-          body: JSON.stringify({ appointmentId, status: "canceled" }),
+          body: JSON.stringify({  status: "canceled" }),
         }
       );
 
