@@ -262,13 +262,7 @@ const ModelViewer = ({ modelUrl }) => {
       <div className="absolute top-4 left-4 bg-white bg-opacity-90 rounded-md shadow-md px-4 py-2 text-sm text-gray-700">
         <p>🖱️ Drag to rotate</p>
         <p>🔍 Scroll to zoom</p>
-      </div>{" "}
-      Fixed Suspense fallback loader and added user instructions for rotating
-      and zooming the 3D object in CarDetails component Fixed Suspense fallback
-      loader and added user instructions for rotating and zooming the 3D object
-      in CarDetails component Fixed Suspense fallback loader and added user
-      instructions for rotating and zooming the 3D object in CarDetails
-      component
+      </div>
     </div>
   );
 };
