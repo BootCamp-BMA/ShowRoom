@@ -116,33 +116,61 @@ const CarDetails = () => {
         )}
       </div>
 
-      <div className="p-6 mt-6 bg-gray-100 rounded-lg shadow-md max-w-md mx-auto">
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Make an Appointment
+      <div className="p-6 mt-6 bg-white rounded-lg shadow-lg max-w-md mx-auto">
+        <h2 className="text-3xl font-bold mb-6 text-center text-blue-700">
+          Book an Appointment
         </h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <FormInput
-            label="Date"
-            id="appointmentDate"
-            name="appointmentDate"
-            type="date"
-            value={appointmentData.appointmentDate}
-            onChange={handleChange}
-            required={true}
-          />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Appointment Date */}
+          <div className="relative">
+            <label
+              htmlFor="appointmentDate"
+              className="block text-gray-700 font-medium mb-1"
+            >
+              Appointment Date:
+            </label>
+            <div className="flex items-center">
+              <input
+                id="appointmentDate"
+                name="appointmentDate"
+                type="date"
+                value={appointmentData.appointmentDate}
+                onChange={handleChange}
+                required
+                className="w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 p-2"
+              />
+            </div>
+          </div>
+
+          {/* Error Message */}
           {errorMessage && (
-            <p className="text-red-500 text-sm">{errorMessage}</p>
+            <p className="text-red-500 text-sm text-center">{errorMessage}</p>
           )}
-          <FormInput
-            label="Duration (in days)"
-            id="duration"
-            name="duration"
-            type="number"
-            value={appointmentData.duration}
-            onChange={handleChange}
-            required={true}
-            min="1"
-          />
+
+          {/* Duration */}
+          <div className="relative">
+            <label
+              htmlFor="duration"
+              className="block text-gray-700 font-medium mb-1"
+            >
+              Duration (in days):
+            </label>
+            <div className="flex items-center">
+              <input
+                id="duration"
+                name="duration"
+                type="number"
+                value={appointmentData.duration}
+                onChange={handleChange}
+                required
+                min="1"
+                placeholder="Enter number of days"
+                className="w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 p-2"
+              />
+            </div>
+          </div>
+
+          {/* Notes */}
           <div>
             <label
               htmlFor="notes"
@@ -156,20 +184,48 @@ const CarDetails = () => {
               value={appointmentData.notes}
               onChange={handleChange}
               rows="4"
-              className="w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 transition duration-200 p-2"
               placeholder="Add any relevant notes (optional)"
+              className="w-full border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 p-2"
             />
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 px-4 rounded-md text-white ${
+            className={`w-full py-3 px-4 text-lg font-semibold rounded-md text-white shadow-sm transition duration-300 ${
               loading
                 ? "bg-blue-300 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600 transition duration-200"
+                : "bg-blue-500 hover:bg-blue-600"
             }`}
           >
-            {loading ? "Submitting..." : "Submit Appointment"}
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  className="animate-spin h-5 w-5 mr-2 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  ></path>
+                </svg>
+                Submitting...
+              </div>
+            ) : (
+              "Submit Appointment"
+            )}
           </button>
         </form>
       </div>
