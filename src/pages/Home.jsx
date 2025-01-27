@@ -65,12 +65,12 @@ const Home = () => {
         }}
         className={`py-16 px-4 sm:px-8 bg-white transition-opacity duration-1000 ${
           inViewCarsSection
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10"
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-10"
         }`}
       >
         <h3 className="text-center text-6xl text-primary font-extrabold mb-8">
-          Our Featured Cars
+        Our Models
         </h3>
         <Cars />
 

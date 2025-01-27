@@ -10,12 +10,12 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-12">
+    <footer className="bg-gradient-to-r from-[#171719] to-[#171719] text-[#F1F1F1] py-12">
       <div className="container mx-auto px-4 sm:px-6 md:px-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
           {/* Column 1: Quick Links */}
           <div>
-            <h4 className="text-2xl font-bold mb-6">Quick Links</h4>
+            <h4 className="text-2xl font-bold mb-6">Menu</h4>
             <ul>
               <li>
                 <NavLink
@@ -46,7 +46,7 @@ const Footer = () => {
 
           {/* Column 2: Social Media */}
           <div>
-            <h4 className="text-2xl font-bold mb-6">Follow Us</h4>
+            <h4 className="text-2xl font-bold mb-6">Social Media</h4>
             <div className="flex space-x-6">
               <a
                 href="https://facebook.com"
@@ -77,10 +77,10 @@ const Footer = () => {
 
           {/* Column 3: Contact Info */}
           <div>
-            <h4 className="text-2xl font-bold mb-6">Contact Us</h4>
+            <h4 className="text-2xl font-bold mb-6">Contact</h4>
             <p className="flex items-center text-gray-400 mb-4">
               <FaEnvelope className="mr-3 text-xl" />
-              support@showroom.com
+              support@revora.com
             </p>
             <p className="flex items-center text-gray-400 mb-4">
               <FaPhone className="mr-3 text-xl" />
@@ -93,7 +93,7 @@ const Footer = () => {
         {/* Bottom Section: Copyright */}
         <div className="mt-12 border-t border-gray-700 pt-6 text-center">
           <p className="text-gray-400">
-            &copy; 2024 ShowRoom. All rights reserved.
+            &copy; 2025 Revora. All rights reserved.
           </p>
         </div>
       </div>
