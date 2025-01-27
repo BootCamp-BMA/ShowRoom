@@ -7,7 +7,7 @@ const CarCard = ({ car }) => {
 
   return (
     <div
-      className="cursor-pointer rounded-2xl border-primary border-solid border p-4 bg-white shadow-lg hover:shadow-2xl transition-all"
+      className="cursor-pointer rounded-2xl border border-gray-300 bg-white shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300"
     >
       {/* Card Header */}
       <CardHeader car={car} navigate={navigate} />
@@ -19,11 +19,14 @@ const CarCard = ({ car }) => {
 };
 
 const CardHeader = ({ car, navigate }) => (
-  <div className="flex justify-between items-center mb-4">
-    <h2 className="text-xl font-bold">{car.pricePerDay} / day</h2>
+  <div className="relative">
+    <CarImage images={car.imageUrls} />
+    <div className="absolute bottom-4 left-4 bg-white px-4 py-2 rounded-full shadow-lg">
+      <h2 className="text-2xl font-semibold text-primary">{car.pricePerDay} / day</h2>
+    </div>
     <button
       onClick={() => navigate(`/Cars/${car._id}`)}
-      className="text-primary font-semibold px-4 py-2 rounded-full border border-primary hover:bg-primary hover:text-white transition-all"
+      className="absolute top-4 right-4 text-white bg-primary font-semibold px-6 py-3 rounded-full border-2 border-primary hover:bg-white hover:text-primary transition-all"
     >
       View Details
     </button>
@@ -31,11 +34,10 @@ const CardHeader = ({ car, navigate }) => (
 );
 
 const CardBody = ({ car }) => (
-  <div>
-    <CarImage images={car.imageUrls} />
+  <div className="px-6 py-4">
     <CarDetails car={car} />
     <button
-      className="w-full bg-primary px-6 py-3 text-white font-bold hover:scale-110 transition-all duration-300 ease-in-out"
+      className="w-full bg-primary px-6 py-3 text-white font-bold rounded-lg hover:scale-110 transition-all duration-300 ease-in-out"
       onClick={() => alert("Booking feature coming soon!")}
     >
       <FaCar className="inline mr-2" /> Book Now
@@ -44,15 +46,15 @@ const CardBody = ({ car }) => (
 );
 
 const CarImage = ({ images }) => (
-  <div className="mb-4">
+  <div className="relative">
     {images && images.length > 0 ? (
       <img
         src={images[0]}
         alt="Car"
-        className="w-full h-64 object-cover rounded-lg"
+        className="w-full h-72 object-cover rounded-t-2xl transition-all duration-500 hover:scale-105"
       />
     ) : (
-      <div className="w-full h-64 bg-gray-300 flex items-center justify-center rounded-lg">
+      <div className="w-full h-72 bg-gray-300 flex items-center justify-center rounded-t-2xl">
         <span>No Image Available</span>
       </div>
     )}
@@ -60,7 +62,7 @@ const CarImage = ({ images }) => (
 );
 
 const CarDetails = ({ car }) => (
-  <div className="text-sm text-gray-600 mb-4">
+  <div className="text-sm text-gray-700 mb-4">
     <p className="flex items-center mb-2">
       <FaCar className="text-primary mr-2" />
       <strong>Model:</strong> {car.model}
