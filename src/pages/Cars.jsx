@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { Appcontext } from "../contexts/AppContext";
 import CarCard from "../components/CarCard"; // Import the CarCard component
-import img from "../assets/images/pexels-lloyd-freeman-599375-1429775.jpg";
-import model from "../modelCar/web3d.glb";
+
 
 const Cars = () => {
   const {cars } = useContext(Appcontext)
