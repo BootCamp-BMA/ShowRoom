@@ -3,6 +3,7 @@ import React from "react";
 const About = () => {
   return (
     <section className="bg-gray-100 py-12 px-6 sm:px-12">
+      
       <div className="max-w-5xl mx-auto text-center">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-primary mb-6">
           About ShowRoom
