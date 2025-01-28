@@ -64,6 +64,7 @@ const Appointment = () => {
         }
 
         const data = await response.json();
+        console.log(data)
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -113,7 +114,7 @@ const Appointment = () => {
 
   // Match user details with appointments
   const getUserName = (userId) => {
-    const user = users.find((user) => user._id === userId);
+    const user = users.find((user) => user.userId === userId);
     return user ? `${user.firstName} ${user.lastName}` : "Unknown User";
   };
 
@@ -122,14 +123,14 @@ const Appointment = () => {
     try {
       console.log("Updating appointmentId:", appointmentId); // Debugging
       const response = await fetch(
-        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update`, // Corrected endpoint
+        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update/${appointmentId}`, // Corrected endpoint
         {
           method: "PUT", // Change to PUT or PATCH if needed
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
-          body: JSON.stringify({ appointmentId, status: "confirmed" }),
+          body: JSON.stringify({ status: "confirmed" }),
         }
       );
 
@@ -155,14 +156,14 @@ const Appointment = () => {
   const handleDecline = async (appointmentId) => {
     try {
       const response = await fetch(
-        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update`, // Corrected endpoint
+        `https://show-room-server-979c93442bc5.herokuapp.com/api/appointement/update/${appointmentId}`, // Corrected endpoint
         {
           method: "PUT", // Change to PUT or PATCH if needed
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
-          body: JSON.stringify({ appointmentId, status: "canceled" }),
+          body: JSON.stringify({  status: "canceled" }),
         }
       );
 

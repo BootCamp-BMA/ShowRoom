@@ -5,7 +5,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@react-three/drei": "^9.120.0",
-    "@react-three/fiber": "^8.17.10",
+    "@react-three/fiber": "^8.17.12",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -19,15 +19,18 @@
     "react-intersection-observer": "^9.13.1",
     "react-loader-spinner": "^6.1.6",
     "react-router-dom": "^6.28.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
+    "scheduler": "^0.25.0",
     "three": "^0.171.0",
+    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "ls -la node_modules && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postinstall": "npm ci"
   },
   "eslintConfig": {
     "extends": [
