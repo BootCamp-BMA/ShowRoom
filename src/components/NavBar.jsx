@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 
 const NavBar = () => {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [userInfo, setUserInfo] = useState(userDetails?.user?.firstName || "");
   const [showBox, setShowBox] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
-
-
 
   const LogOut = () => {
     localStorage.clear();
@@ -25,11 +21,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md py-4 px-6 flex justify-between items-center text-white transition-all duration-300 ${
-        visible ? "translate-y-0" : "-translate-y-full"
-      }`}
-    >
+    <nav className="fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-md py-4 px-6 flex justify-between items-center text-white transition-all duration-300">
       {/* Left side - Menu */}
       <button className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMenuOpen(!menuOpen)}>
         <Menu size={28} />
@@ -42,8 +34,8 @@ const NavBar = () => {
       </NavLink>
       
 
-      {/* Right side - Profile */}
-      {userInfo && (
+      {/* Right side - Profile or Login Button */}
+      {userInfo ? (
         <div className="relative flex items-center cursor-pointer" onClick={() => setShowBox(!showBox)}>
           <div className="w-10 h-10 bg-gray-800 text-white rounded-full flex justify-center items-center text-lg font-semibold hover:scale-110 transition-transform">
             {getName(userInfo)}
@@ -62,6 +54,13 @@ const NavBar = () => {
             </div>
           )}
         </div>
+      ) : (
+        <NavLink to="/login">
+          <button className="flex items-center gap-2 rounded-full bg-transparent px-6 py-3 text-white font-bold hover:bg-gray-700 hover:scale-105 transition-all duration-300">
+            <User size={24} />
+            <span>Login</span>
+          </button>
+        </NavLink>
       )}
 
       {/* Sliding Menu */}
@@ -93,4 +92,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
