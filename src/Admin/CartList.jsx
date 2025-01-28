@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
 
 const CarList = () => {
   const [cars, setCars] = useState([]); // Store car data
   const [loading, setLoading] = useState(true); // Track loading state
-  const navigate = useNavigate()
+  const [deletingCarId, setDeletingCarId] = useState(null); // Track the car currently being deleted
+  const navigate = useNavigate();
+
   const fetchCars = async () => {
     const apiUrl =
       "https://show-room-server-979c93442bc5.herokuapp.com/api/cars/getWhere";
 
-    const requestBody = {
-      condition: {}, // Fetch all cars, no specific condition
-      select: "make model isAvailable ", // Only fetch required fields
-    };
-
     try {
+      setLoading(true);
       const response = await fetch(apiUrl, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`, // Update with your auth token
-        }
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
       });
 
       if (!response.ok) {
@@ -29,9 +28,9 @@ const CarList = () => {
 
       const carData = await response.json();
       setCars(carData); // Update state with the fetched cars
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching cars:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -40,7 +39,7 @@ const CarList = () => {
     const updateUrl = `https://show-room-server-979c93442bc5.herokuapp.com/api/cars/update/${id}`;
 
     const requestBody = {
-      isAvailable, // Update the isAvailable field
+      isAvailable,
     };
 
     try {
@@ -57,11 +56,42 @@ const CarList = () => {
         throw new Error(`Error updating car: ${response.statusText}`);
       }
 
-      // Update the local state to reflect the change
-      window.location.reload()
-      navigate("")
+      window.location.reload();
+      navigate("");
     } catch (error) {
       console.error("Error updating car availability:", error);
+    }
+  };
+
+  const deleteCar = async (id) => {
+    const deleteUrl =
+      "https://show-room-server-979c93442bc5.herokuapp.com/api/cars/deleteIds";
+    setDeletingCarId(id); // Set the car being deleted
+
+    try {
+      const response = await fetch(deleteUrl, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({
+          id: id, // Send the car ID to delete
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Response not OK", response);
+        throw new Error(`Error deleting car: ${response.statusText}`);
+      }
+
+      setCars((prevCars) => prevCars.filter((car) => car._id !== id));
+      alert("Car deleted successfully!"); // Success message
+    } catch (error) {
+      console.error("Error deleting car:", error.message);
+      alert(`Failed to delete car: ${error.message}`);
+    } finally {
+      setDeletingCarId(null); // Reset the deleting state after operation
     }
   };
 
@@ -78,16 +108,28 @@ const CarList = () => {
           {cars.map((car) => (
             <div
               key={car._id}
-              className="bg-white shadow-lg rounded-lg overflow-hidden"
+              className="bg-white shadow-lg rounded-lg overflow-hidden relative"
             >
+              {/* Show spinner and hide delete button if this car is being deleted */}
+              {deletingCarId === car._id ? (
+                <div className="absolute inset-0 flex justify-center items-center bg-gray-200 bg-opacity-50">
+                  <div className="w-8 h-8 border-4 border-blue-500 border-dotted rounded-full animate-spin"></div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => deleteCar(car._id)}
+                  className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                >
+                  <FaTrash size={18} />
+                </button>
+              )}
+
               <div className="p-4">
                 <h2 className="text-lg font-bold mb-2 text-gray-800">
                   {car.make} {car.model}
                 </h2>
                 <div className="flex items-center">
-                  <label className="text-sm font-medium mr-2">
-                    Available:
-                  </label>
+                  <label className="text-sm font-medium mr-2">Available:</label>
                   <input
                     type="checkbox"
                     checked={car.isAvailable}
@@ -98,7 +140,6 @@ const CarList = () => {
                   />
                 </div>
               </div>
-              
             </div>
           ))}
         </div>
