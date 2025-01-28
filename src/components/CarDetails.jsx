@@ -84,13 +84,13 @@ const CarDetails = () => {
     if (carDetails && carDetails.model3D) {
       setModelUrl(carDetails.model3D);
     } else {
-      setModelUrl("/fallback-model.glb");
+      setModelUrl("../modelCar/web3d.glb");
     }
   }, [carDetails]);
 
   if (loading) {
     return <div>Loading...</div>;
-  }
+  } 
 
   return (
     <>

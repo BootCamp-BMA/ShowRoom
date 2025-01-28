@@ -40,6 +40,9 @@ const NavBar = () => {
       <NavLink to="/" className="text-3xl font-bold tracking-wide absolute left-1/2 transform -translate-x-1/2">
         REVORA
       </NavLink>
+      <NavLink to="/login" className="bg-white p-4 text-black ml-6 text-3xl font-bold tracking-wide absolute left-1/2 transform -translate-x-1/2">
+        login
+      </NavLink>
 
       {/* Right side - Profile */}
       {userInfo && (

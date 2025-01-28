@@ -7,7 +7,10 @@ import model from "../modelCar/web3d.glb";
 const Cars = () => {
   const {cars } = useContext(Appcontext)
 
-  if (!cars || cars.length === 0) {
+  if (!cars ) {
+    return <div className="text-center text-lg">..loading cars</div>;
+  }
+  if (cars.length === 0) {
     return <div className="text-center text-lg">..loading cars</div>;
   }
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CarList = () => {
   const [cars, setCars] = useState([]); // Store car data
   const [loading, setLoading] = useState(true); // Track loading state
-
+  const navigate = useNavigate()
   const fetchCars = async () => {
     const apiUrl =
       "https://show-room-server-979c93442bc5.herokuapp.com/api/cars/getWhere";
@@ -58,6 +59,7 @@ const CarList = () => {
 
       // Update the local state to reflect the change
       window.location.reload()
+      navigate("")
     } catch (error) {
       console.error("Error updating car availability:", error);
     }
