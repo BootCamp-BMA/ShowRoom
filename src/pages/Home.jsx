@@ -118,7 +118,7 @@ const Home = () => {
 
         {/* Show All Cars Button */}
         <div className="text-center mt-12">
-          <button className="rounded-full bg-primary px-6 py-3 text-white font-bold hover:scale-110 transition-all duration-300 ease-in-out">
+          <button className="px-6 py-3 border bg-primary px-6 py-3 text-white font-bold hover:scale-110 transition-all duration-300 ease-in-out">
             Show All Cars
           </button>
         </div>
@@ -128,15 +128,15 @@ const Home = () => {
       <section className="flex items-center justify-between py-16 px-6 bg-gray-50">
         {/* Left Side Content */}
         <div className="w-full lg:w-1/2 pr-8">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-primary mb-4">
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-primary mb-4 leading-tight">
             Online, In-person, Everywhere
           </h2>
-          <p className="text-lg text-gray-600 mb-6">
+          <p className="text-lg text-gray-600 mb-6 max-w-lg">
             Experience the convenience of buying your car from anywhere,
             anytime. Whether online or in-person, our platform makes it easy to
             find your perfect car.
           </p>
-          <button className="rounded-full bg-primary px-6 py-3 text-white font-bold hover:scale-110 transition-all duration-300 ease-in-out">
+          <button className="px-6 py-3 border bg-primary px-6 py-3 text-white font-bold hover:scale-110 transition-all duration-300 ease-in-out">
             Get Started
           </button>
         </div>
@@ -144,12 +144,13 @@ const Home = () => {
         {/* Right Side: Car Image */}
         <div className="w-full lg:w-1/2">
           <img
-            src="/carImages/pexels-mikebirdy-120049.jpg"
+            src="/carImages/The Maybe Maybach_ Mercedes Might Be Working on a 20-Foot-Long Car - Core77.jpg"
             alt="Car"
             className="w-full h-auto rounded-lg shadow-lg object-cover"
           />
         </div>
       </section>
+
     </>
   );
 };

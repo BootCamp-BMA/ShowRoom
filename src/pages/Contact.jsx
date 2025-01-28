@@ -2,7 +2,8 @@ import React from "react";
 
 const Contact = () => {
   return (
-    <section className="bg-gray-100 py-12 px-6 sm:px-12">
+    <section className="bg-gray-100 py-12 px-6 sm:px-12 mt-20">
+      
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-primary text-center mb-6">
           Get in Touch
@@ -79,10 +80,10 @@ const Contact = () => {
           Contact Information
         </h2>
         <p className="text-gray-700 mb-2">
-          <strong>Email:</strong> support@showroom.com
+          <strong>Email:</strong> support@revora.com
         </p>
         <p className="text-gray-700">
-          <strong>Phone:</strong> +1 (123) 456-7890
+          <strong>Phone:</strong> +(213) 556606665
         </p>
       </div>
     </section>

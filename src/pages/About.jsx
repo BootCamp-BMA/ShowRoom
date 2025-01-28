@@ -2,14 +2,14 @@ import React from "react";
 
 const About = () => {
   return (
-    <section className="bg-gray-100 py-12 px-6 sm:px-12">
-      
+    <section className="bg-gray-100 py-12 px-6 sm:px-12 mt-20">
+      {/* Added mt-20 to create space below the fixed navbar */}
       <div className="max-w-5xl mx-auto text-center">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-primary mb-6">
-          About ShowRoom
+          About REVORA
         </h1>
         <p className="text-lg sm:text-xl text-gray-700 mb-8">
-          ShowRoom is your trusted platform for discovering and purchasing the
+          Revora is your trusted platform for discovering and purchasing the
           best cars. We bring together cutting-edge technology and a passion for
           innovation to ensure you find your dream vehicle with ease.
         </p>
