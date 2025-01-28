@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Menu, X, User } from "lucide-react";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { Menu, X, User, ArrowLeft } from "lucide-react";
 
 const NavBar = () => {
+  const location = useLocation(); // Hook to get the current route
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const [userInfo, setUserInfo] = useState(userDetails?.user?.firstName || "");
   const [showBox, setShowBox] = useState(false);
@@ -20,8 +21,43 @@ const NavBar = () => {
     return name.split(" ").map((word) => word[0].toUpperCase()).join("");
   };
 
+  // Check if the current path is contact, about, or all cars
+  const isSpecialPage = [
+    "/contact",
+    "/about",
+    "/cars"
+  ].includes(location.pathname);
+
+  // If the current path is "/login", only display the logo and go back button
+  if (location.pathname === "/login") {
+    return (
+      <nav className="fixed top-0 left-0 w-full z-50 bg-black py-4 px-6 flex justify-between items-center text-white">
+        <button
+          onClick={() => navigate("/")}
+          className="text-white flex items-center gap-2"
+        >
+          <ArrowLeft size={24} />
+          <span>Go Back</span>
+        </button>
+        
+        <NavLink
+          to="/"
+          className="text-3xl font-bold tracking-wide absolute left-1/2 transform -translate-x-1/2 text-white hover:text-gray-300"
+          style={{ fontFamily: "Arial, Helvetica, sans-serif" }}
+        >
+          REVORA
+        </NavLink>
+      </nav>
+    );
+  }
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-black bg-opacity-90 py-4 px-6 flex justify-between items-center text-white transition-all duration-300">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 py-4 px-6 flex justify-between items-center text-white transition-all duration-300 ${
+        isSpecialPage ? "bg-black" : "bg-black bg-opacity-90"
+      }`}
+      style={{ height: "64px" }}  // Set a fixed height for the navbar
+    >
       {/* Left side - Menu */}
       <button
         className="flex items-center gap-2 text-lg font-semibold text-white hover:text-gray-300"
@@ -41,7 +77,7 @@ const NavBar = () => {
       </NavLink>
 
       {/* Right side - Profile or Login Button */}
-      {userInfo ? (
+      {!isSpecialPage && userInfo ? (
         <div
           className="relative flex items-center cursor-pointer"
           onClick={() => setShowBox(!showBox)}
@@ -72,14 +108,14 @@ const NavBar = () => {
             </div>
           )}
         </div>
-      ) : (
+      ) : (!isSpecialPage && (
         <NavLink to="/login">
           <button className="flex items-center gap-2 rounded-full bg-transparent px-6 py-3 text-white font-bold hover:bg-gray-700 hover:scale-105 transition-all duration-300">
             <User size={24} />
             <span>Login</span>
           </button>
         </NavLink>
-      )}
+      ))}
 
       {/* Sliding Menu */}
       <div
@@ -129,3 +165,4 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
