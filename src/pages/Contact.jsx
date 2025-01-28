@@ -80,10 +80,10 @@ const Contact = () => {
           Contact Information
         </h2>
         <p className="text-gray-700 mb-2">
-          <strong>Email:</strong> support@showroom.com
+          <strong>Email:</strong> support@revora.com
         </p>
         <p className="text-gray-700">
-          <strong>Phone:</strong> +1 (123) 456-7890
+          <strong>Phone:</strong> +(213) 556606665
         </p>
       </div>
     </section>
