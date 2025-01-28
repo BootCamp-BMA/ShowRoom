@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 const NavBar = () => {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-  const [userInfo, setUserInfo] = useState(userDetails?.user?.firstName || ""); // Safe check using optional chaining
+  const [userInfo, setUserInfo] = useState(userDetails?.user?.firstName || "");
   const [showBox, setShowBox] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [visible, setVisible] = useState(true);
   const navigate = useNavigate();
+
+
 
   const LogOut = () => {
     localStorage.clear();
@@ -13,110 +19,77 @@ const NavBar = () => {
     navigate("/");
   };
 
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setUserInfo(localStorage.getItem("userInfo"));
-    };
-
-    window.addEventListener("storageUpdate", handleStorageChange);
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storageUpdate", handleStorageChange);
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
-
   const getName = (name) => {
     if (!name) return "";
-    const nameArray = name.split(" ");
-    return nameArray.map((word) => word[0].toUpperCase()).join("");
+    return name.split(" ").map((word) => word[0].toUpperCase()).join("");
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full z-20 flex justify-between items-center px-4 py-4 ">
-      <NavLink
-        to="/"
-        className="text-3xl font-bold hover:text-indigo-200 transition-colors duration-300"
-      >
-        ShowRoom <span className="text-yellow-300">.</span>
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 bg-black/90 backdrop-blur-md py-4 px-6 flex justify-between items-center text-white transition-all duration-300 ${
+        visible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
+      {/* Left side - Menu */}
+      <button className="flex items-center gap-2 text-lg font-semibold" onClick={() => setMenuOpen(!menuOpen)}>
+        <Menu size={28} />
+        <span>Menu</span>
+      </button>
+
+      {/* Center - Logo */}
+      <NavLink to="/" className="text-3xl font-bold tracking-wide absolute left-1/2 transform -translate-x-1/2">
+        REVORA
       </NavLink>
 
-      {/* Navigation links with adjusted font size */}
-      <ul className="hidden md:flex items-center gap-12 font-medium">
-        <NavLink
-          to="/"
-          className="py-1 px-3 text-lg hover:bg-indigo-600 transition-all duration-300" // Adjusted font size for Home
-          activeClassName="bg-indigo-600 text-white font-bold"
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to="/cars"
-          className="py-1 px-3 text-lg hover:bg-indigo-600 transition-all duration-300" // Adjusted font size for All Cars
-          activeClassName="bg-indigo-600 text-white font-bold"
-        >
-          All Cars
-        </NavLink>
-        <NavLink
-          to="/about"
-          className="py-1 px-3 text-lg hover:bg-indigo-600 transition-all duration-300" // Adjusted font size for About
-          activeClassName="bg-indigo-600 text-white font-bold"
-        >
-          About
-        </NavLink>
-        <NavLink
-          to="/contact"
-          className="py-1 px-3 text-lg hover:bg-indigo-600 transition-all duration-300" // Adjusted font size for Contact
-          activeClassName="bg-indigo-600 text-white font-bold"
-        >
-          Contact
-        </NavLink>
-      </ul>
-
-      {/* User profile or login */}
-      {userInfo ? (
-        <div
-          className="relative flex items-center gap-3 cursor-pointer"
-          onClick={() => setShowBox(!showBox)}
-        >
-          <div className="w-10 h-10 bg-yellow-400 text-white rounded-full flex justify-center items-center text-lg font-semibold hover:scale-110 transition-transform duration-300">
-            {getName(userInfo)} {/* Display initials */}
+      {/* Right side - Profile */}
+      {userInfo && (
+        <div className="relative flex items-center cursor-pointer" onClick={() => setShowBox(!showBox)}>
+          <div className="w-10 h-10 bg-gray-800 text-white rounded-full flex justify-center items-center text-lg font-semibold hover:scale-110 transition-transform">
+            {getName(userInfo)}
           </div>
           {showBox && (
-            <div className="absolute top-16 right-0 mt-2 w-48 bg-white shadow-xl rounded-lg py-2 border-2 border-gray-200 z-50 transition-all duration-300">
-              <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                onClick={() => navigate("/myProfile")}
-              >
+            <div className="absolute top-12 right-0 w-48 bg-white shadow-lg rounded-lg py-2 text-black">
+              <button className="block w-full px-4 py-2 hover:bg-gray-100" onClick={() => navigate("/myProfile")}>
                 My Profile
               </button>
-              <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                onClick={() => navigate("/myApointement")}
-              >
-                My Apointement
+              <button className="block w-full px-4 py-2 hover:bg-gray-100" onClick={() => navigate("/myApointement")}>
+                My Appointments
               </button>
-              <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
-                onClick={() => LogOut()}
-              >
+              <button className="block w-full px-4 py-2 hover:bg-gray-100" onClick={LogOut}>
                 Logout
               </button>
             </div>
           )}
         </div>
-      ) : (
-        <div className="flex gap-3">
-          <NavLink to="/login">
-            <button className="hidden md:block rounded-full bg-primary px-6 py-3 text-white font-bold hover:scale-105 transition-transform duration-300">
-              Login
-            </button>
-          </NavLink>
-        </div>
       )}
-    </div>
+
+      {/* Sliding Menu */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-black transition-transform duration-300 ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <button className="absolute top-6 right-6" onClick={() => setMenuOpen(false)}>
+          <X size={28} />
+        </button>
+        <ul className="flex flex-col items-start pt-20 pl-6 space-y-6 text-lg font-medium">
+          <NavLink to="/" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>
+            Home
+          </NavLink>
+          <NavLink to="/cars" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>
+            All Cars
+          </NavLink>
+          <NavLink to="/about" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>
+            About
+          </NavLink>
+          <NavLink to="/contact" className="hover:text-gray-400" onClick={() => setMenuOpen(false)}>
+            Contact
+          </NavLink>
+        </ul>
+      </div>
+    </nav>
   );
 };
 
 export default NavBar;
+
