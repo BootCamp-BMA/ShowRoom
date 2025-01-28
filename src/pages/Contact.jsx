@@ -2,7 +2,8 @@ import React from "react";
 
 const Contact = () => {
   return (
-    <section className="bg-gray-100 py-12 px-6 sm:px-12">
+    <section className="bg-gray-100 py-12 px-6 sm:px-12 mt-20">
+      
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-primary text-center mb-6">
           Get in Touch
