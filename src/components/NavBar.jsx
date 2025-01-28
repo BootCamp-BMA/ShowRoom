@@ -36,48 +36,33 @@ const NavBar = () => {
   }, []);
 
   return (
-
     <nav className={`fixed top-0 left-0 w-full z-50 py-4 px-6 flex justify-between items-center transition-all duration-300 ${isDarkBackground ? 'bg-gray-800' : 'bg-transparent backdrop-blur-md'}`}>
       {/* Left side - Menu */}
       <button className={`flex items-center gap-2 text-lg font-semibold ${isDarkBackground ? 'text-white' : 'text-black'}`} onClick={() => setMenuOpen(!menuOpen)}>
-
         <Menu size={28} />
         <span>Menu</span>
       </button>
 
       {/* Center - Logo */}
-
       <NavLink to="/" className={`text-3xl font-bold tracking-wide absolute left-1/2 transform -translate-x-1/2 ${isDarkBackground ? 'text-white' : 'text-black'}`}>
-
         REVORA
       </NavLink>
 
       {/* Right side - Profile or Login Button */}
       {userInfo ? (
- 
         <div className="relative flex items-center cursor-pointer" onClick={() => setShowBox(!showBox)}>
           <div className={`w-10 h-10 bg-gray-800 text-white rounded-full flex justify-center items-center text-lg font-semibold hover:scale-110 transition-transform`}>
-
             {getName(userInfo)}
           </div>
           {showBox && (
             <div className="absolute top-12 right-0 w-48 bg-white shadow-lg rounded-lg py-2 text-black">
-              <button
-                className="block w-full px-4 py-2 hover:bg-gray-100"
-                onClick={() => navigate("/myProfile")}
-              >
+              <button className="block w-full px-4 py-2 hover:bg-gray-100" onClick={() => navigate("/myProfile")}>
                 My Profile
               </button>
-              <button
-                className="block w-full px-4 py-2 hover:bg-gray-100"
-                onClick={() => navigate("/myApointement")}
-              >
+              <button className="block w-full px-4 py-2 hover:bg-gray-100" onClick={() => navigate("/myApointement")}>
                 My Appointments
               </button>
-              <button
-                className="block w-full px-4 py-2 hover:bg-gray-100"
-                onClick={LogOut}
-              >
+              <button className="block w-full px-4 py-2 hover:bg-gray-100" onClick={LogOut}>
                 Logout
               </button>
             </div>
@@ -94,7 +79,6 @@ const NavBar = () => {
 
       {/* Sliding Menu */}
       <div
-
         className={`fixed top-0 left-0 h-full w-64 bg-black transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <button className="absolute top-6 right-6" onClick={() => setMenuOpen(false)}>
@@ -111,7 +95,6 @@ const NavBar = () => {
             About
           </NavLink>
           <NavLink to="/contact" className={`hover:text-gray-400 ${isDarkBackground ? 'text-white' : 'text-black'}`} onClick={() => setMenuOpen(false)}>
-
             Contact
           </NavLink>
         </ul>
