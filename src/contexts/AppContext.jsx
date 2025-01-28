@@ -21,9 +21,11 @@ const AppContextProvider = (props) => {
           throw new Error(`Error fetching cars: ${response.statusText}`);
         }
 
-        const carData = await response.json();
+        const carData = await response.json(); // Parse the JSON response
+        const availableCars = carData.filter((car) => car.isAvailable === true); // Filter cars that are available
+
         const carsWithImagesAndModels = await Promise.all(
-          carData.map(async (car) => {
+          availableCars.map(async (car) => {
             const imageUrls = await fetchCarImages(car.images);
             const model3D = await fetchCarModel(car.model3D);
             return { ...car, imageUrls, model3D };
