@@ -31,7 +31,7 @@ export const handleFormSubmit = async ({
       // Emit custom events
       window.dispatchEvent(new Event("storageUpdate"));
       window.dispatchEvent(new Event("storage"));
-      window.location.reload()
+      
       if (result.user.role === "admin") {
         navigate("/admin");
       }
